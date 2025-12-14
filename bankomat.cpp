@@ -35,11 +35,11 @@ int hlavniMenu()
 {
     /* --- Texty pro komunikaci s uživatelem --- */
     const string ERROR_CISLO =
-        "Chyba: povolene je pouze cele cislo.";
+        "Chyba: povolené je pouze celé číslo.";
     const string ERROR_ROZSAH =
-        "Chyba: povolene je pouze cele cislo v rozpeti 1-9999";
+        "Chyba: povolené je pouze celé číslo v rozpětí 1-9999";
     const string TEXT_VYZVA =
-        ">> Zadejte cele cislo v rozpeti 1-9999 (0 pro ukonceni programu): ";
+        ">> Zadejte celé číslo v rozpětí 1-9999 (0 pro ukončení programu): ";
 
     /* --- Hlavní smyčka programu --- */
     while (true)
@@ -127,7 +127,7 @@ void vypisCisloSlovy(int cislo)
     }
 
     /* --- Výpis slovního vyjádření čísla --- */
-    cout << "Slovni vyjadreni cisla " << puvodniCislo
+    cout << "Slovní vyjádření "
          << ": " << vysledek << endl;
 }
 
