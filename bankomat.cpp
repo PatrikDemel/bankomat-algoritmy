@@ -100,7 +100,6 @@ void vypisCisloSlovy(int cislo)
 
     /* --- Příprava proměnných --- */
     string vysledek;
-    int puvodniCislo = cislo;
 
     /* --- Rozklad čísla na tisíce, stovky, desítky a jednotky --- */
     if (cislo >= 1000)
