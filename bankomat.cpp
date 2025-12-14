@@ -6,30 +6,30 @@
  Výstup: slovní reprezentace čísla a jeho rozložení v bankovkách a mincích
 
  Program, který v cyklu přijímá od uživatele čísla a ke každému vypisuje jeho slovní vyjádření
- a nejoptimálnější rozklad na bankovky o hodnotách 100, 200, 500, 1000, 5000 Kč a mincí o
- hodnotách 1,2,5,10,20, a 50 Kč.
+ a nejoptimálnější rozklad na bankovky a mince.
 ***********************************************************************************************/
 
 #include <iostream>
 #include <string>
 using namespace std;
 
-// Deklarace funkcí
+/* --- Deklarace funkcí --- */
 int hlavniMenu();
-void vypisCisloSlovy(int num);
+void vypisCisloSlovy(int cislo);
+void rozkladBankovek(int cislo);
 
 /* ========================================================================== */
 /*  HLAVNÍ FUNKCE                                                             */
 /* ========================================================================== */
 int main()
 {
+    /* --- Spuštění hlavního menu programu --- */
     hlavniMenu();
-
     return 0;
 }
 
 /* ========================================================================== */
-/*  FUNKCE PRO ZAJIŠTĚNÍ VSTUPU                                               */
+/*  FUNKCE PRO ZAJIŠTĚNÍ VSTUPU A ŘÍZENÍ PROGRAMU                              */
 /* ========================================================================== */
 int hlavniMenu()
 {
@@ -41,7 +41,7 @@ int hlavniMenu()
     const string TEXT_VYZVA =
         ">> Zadejte cele cislo v rozpeti 1-9999 (0 pro ukonceni programu): ";
 
-    /* --- Hlavní nekonečná smyčka programu --- */
+    /* --- Hlavní smyčka programu --- */
     while (true)
     {
         int cislo;
@@ -51,7 +51,7 @@ int hlavniMenu()
              << TEXT_VYZVA;
         cin >> cislo;
 
-        /* --- Kontrola, zda byl vstup číselný --- */
+        /* --- Kontrola číselného vstupu --- */
         if (cin.fail())
         {
             cin.clear();
@@ -64,6 +64,7 @@ int hlavniMenu()
         /* --- Ukončení programu --- */
         if (cislo == 0)
         {
+            cout << "Program ukončen.";
             return 0;
         }
 
@@ -75,8 +76,9 @@ int hlavniMenu()
             continue;
         }
 
-        /* --- Platný vstup – zpracování čísla --- */
+        /* --- Zpracování platného vstupu --- */
         vypisCisloSlovy(cislo);
+        rozkladBankovek(cislo);
     }
 }
 
@@ -85,45 +87,78 @@ int hlavniMenu()
 /* ========================================================================== */
 void vypisCisloSlovy(int cislo)
 {
-    /* --- Seznam slovních vyjádření čísel --- */
-    string seznamCisla[] = {"jedna", "dva", "tři", "čtyři", "pět", "šest", "sedm", "osm", "devět", "deset", "jedenáct", "dvanáct", "třináct", "čtrnáct", "patnáct", "šestnáct", "sedmnáct", "osmnáct", "devatenáct"};
-    string seznamDesitky[] = {"deset", "dvacet", "třicet", "čtyřicet", "padesát", "šedesát", "sedmdesát", "osmdesát", "devadesát"};
-    string seznamStovky[] = {"sto", "dvěstě", "třista", "čtyřista", "pětset", "šestset", "sedmset", "osmset", "devětset"};
-    string seznamTisice[] = {"tisíc", "dvatisíce", "třitisíce", "čtyřitisíce", "pěttisíc", "šesttisíc", "sedmtisíc", "osmtisíc", "devěttisíc"};
+    /* --- Slovní reprezentace čísel --- */
+    string seznamCisla[] = {"jedna", "dva", "tři", "čtyři", "pět", "šest", "sedm", "osm", "devět",
+                            "deset", "jedenáct", "dvanáct", "třináct", "čtrnáct", "patnáct",
+                            "šestnáct", "sedmnáct", "osmnáct", "devatenáct"};
+    string seznamDesitky[] = {"deset", "dvacet", "třicet", "čtyřicet", "padesát",
+                              "šedesát", "sedmdesát", "osmdesát", "devadesát"};
+    string seznamStovky[] = {"sto", "dvěstě", "třista", "čtyřista", "pětset",
+                             "šestset", "sedmset", "osmset", "devětset"};
+    string seznamTisice[] = {"tisíc", "dvatisíce", "třitisíce", "čtyřitisíce",
+                             "pěttisíc", "šesttisíc", "sedmtisíc", "osmtisíc", "devěttisíc"};
 
     /* --- Příprava proměnných --- */
     string vysledek;
     int puvodniCislo = cislo;
 
-    /* --- Zpracování tisíců --- */
+    /* --- Rozklad čísla na tisíce, stovky, desítky a jednotky --- */
     if (cislo >= 1000)
     {
         vysledek += seznamTisice[cislo / 1000 - 1];
         cislo %= 1000;
     }
 
-    /* --- Zpracování stovek --- */
     if (cislo >= 100)
     {
         vysledek += seznamStovky[cislo / 100 - 1];
         cislo %= 100;
     }
 
-    /* --- Zpracování desítek --- */
     if (cislo >= 20)
     {
         vysledek += seznamDesitky[cislo / 10 - 1];
         cislo %= 10;
     }
 
-    /* --- Zpracování jednotek --- */
     if (cislo >= 1)
     {
         vysledek += seznamCisla[cislo - 1];
     }
 
-    /* --- Výpis výsledku --- */
+    /* --- Výpis slovního vyjádření čísla --- */
     cout << "Slovni vyjadreni cisla " << puvodniCislo
-         << ": " << vysledek << endl
+         << ": " << vysledek << endl;
+}
+
+/* ========================================================================== */
+/*  FUNKCE PRO ROZKLAD BANKOVEK                                               */
+/* ========================================================================== */
+void rozkladBankovek(int cislo)
+{
+    /* --- Hodnoty bankovek a mincí --- */
+    int hodnoty[] = {5000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1};
+    bool prvni = true;
+
+    /* --- Výpis rozkladu částky --- */
+    cout << "Rozklad na bankovky: ";
+
+    /* --- Postupný rozklad částky od nejvyšší hodnoty --- */
+    for (int h : hodnoty)
+    {
+        int pocet = cislo / h;
+
+        if (pocet > 0)
+        {
+            if (!prvni)
+                cout << " + ";
+
+            cout << pocet << "x" << h;
+            cislo %= h;
+            prvni = false;
+        }
+    }
+
+    cout << endl
          << endl;
 }
